@@ -5,11 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JavaScript Quiz</title>
-    <link rel="stylesheet" href="Assets/script.js">
+    <link rel="stylesheet" href="Assets/style.css">
 </head>
 <body>
+    <div id="rules">
+        <h2> Rules: </h2>
+        <ul>
+            <li>
+                You are given 75 seconds to answer 5 quiz questions.
+            </li>
+            <li>
+                If your answer is wrong, score and timer will be decremented by 10 points. If it's right, score will be increased by 10 points.
+            </li>
+            <li>
+                Once all questions are answered || you hit zero points, the quiz will end.
+            </li>
+        </ul>
+    </div>
+
+    <div id="scoreBox">
+        
+    </div>
+   
+    <form class="input-form" action="/action_page.php">
+        <input type="text" id="initials" name="fname" placeholder="enter your initials">
+        
+    </form>
+
     <div id="quiz-container">
         <button id="start">Start Quiz</button>
+        
     </div>
     <script src="Assets/script.js"></script>
 </body>
