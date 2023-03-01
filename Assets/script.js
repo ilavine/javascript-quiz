@@ -12,7 +12,6 @@
 // const options = document.createElement("button");
 // options.setAttribute("class", "options");
 
-
 // // Credits: LinkedIn Learning
 // const quiz = [
 //   {
@@ -72,7 +71,6 @@
 //   }, 1000);
 // }
 
-
 // function scoreKeeper(userAnswer) {
 //   startTimer();
 //   const button = document.querySelectorAll("button");
@@ -100,9 +98,8 @@
 //   }
 // }
 
-// function displayQuestions() { 
+// function displayQuestions() {
 
- 
 //   score.textContent = "Score: " + scoreCount;
 
 //   displayQuestion.textContent =
@@ -111,8 +108,6 @@
 //   quizContaier.appendChild(displayQuestion);
 //   for (let i = 0; i < quiz[currentQuestion].answers.length; i++) {
 //     const options = document.createElement("button");
-   
-   
 
 //     quizContaier.appendChild(options);
 //     options.setAttribute("class", "options");
@@ -149,11 +144,12 @@
 //     "style",
 //     "width:" + width + "px; position: absolute;left: 50px;top: 10px;"
 //   );
-  
+
 //   displayQuestions();
 // });
 
 const quizContainer = document.body;
+const scoreBox = document.getElementById("scoreBox");
 const startQuizBtn = document.getElementById("start");
 const inputForm = document.getElementById("initials");
 
@@ -162,8 +158,8 @@ let scoreCount = 20;
 let currentQuestion = 0;
 const displayQuestion = document.createElement("h1");
 
-
-const score = document.createElement("h2");
+const score = document.getElementById("score");
+const timerEl = document.getElementById("timer");
 
 // Credits: LinkedIn Learning
 const quiz = [
@@ -203,15 +199,12 @@ const quiz = [
 function startTimer() {
   // Sets timer
 
-  const timerEl = document.createElement("div");
   quizContainer.appendChild(timerEl);
-  timerEl.setAttribute("id", "timer");
- 
-  const timer = setInterval(function() {
+
+  const timer = setInterval(function () {
     timerCount--;
-    timerEl.innerHTML = `Time Left: ${timerCount}`;
-  
-   
+    timerEl.textContent = `Time Left: ${timerCount}`;
+
     if (timerCount === 0) {
       // Clears interval
       clearInterval(timer);
@@ -220,27 +213,83 @@ function startTimer() {
   }, 1000);
 }
 
+function getScores() {
+  const scores = [];
+
+  for (let i = 0; i < localStorage.length; i++) {
+    const initials = localStorage.key(i);
+    const score = localStorage.getItem(initials);
+    scores.push({ initials, score });
+  }
+
+  // Sort scores in descending order of score
+  scores.sort(function (a, b) {
+    return b.score - a.score;
+  });
+
+  return scores;
+}
+
+function displayScores(scores) {
+  // Clears quiz container and displays high scores
+
+  quizContainer.innerHTML = "";
+  const newH1 = document.createElement("h1");
+  newH1.textContent = "High Scores";
+  quizContainer.appendChild(newH1);
+
+  const ol = document.createElement("ol");
+
+  for (let i = 0; i < scores.length; i++) {
+    const li = document.createElement("li");
+    li.textContent = `${scores[i].initials}: ${scores[i].score}`;
+    ol.appendChild(li);
+  }
+
+  quizContainer.appendChild(ol);
+
+  const goBackBtn = document.createElement("button");
+  goBackBtn.setAttribute("id", "goBackBtn");
+  goBackBtn.textContent = "Go Back";
+  goBackBtn.addEventListener("click", function () {
+    location.reload();
+  });
+  quizContainer.appendChild(goBackBtn);
+
+  const clearBtn = document.createElement("button");
+  clearBtn.setAttribute("id", "clearBtn");
+  clearBtn.textContent = "Clear High Scores";
+  clearBtn.addEventListener("click", function () {
+    localStorage.clear();
+    ol.innerHTML = "";
+  });
+  quizContainer.appendChild(clearBtn);
+}
+
 function endQuiz() {
   const newH1 = document.createElement("h1");
-  newH1.textContent = "The END! \nScore: " + scoreCount;
+  newH1.textContent = "The END! 🎉 \nScore: " + scoreCount;
+  if (scoreCount === 0) {
+    newH1.innerHTML = "Score is 0. 😔 Try again!";
+  }
   quizContainer.innerHTML = "";
   quizContainer.appendChild(newH1);
-  
+
   const submitBtn = document.createElement("button");
+  submitBtn.setAttribute("id", "submitBtn");
   submitBtn.textContent = "Submit";
-  submitBtn.addEventListener("click", function() {
+  submitBtn.addEventListener("click", function () {
     const initials = inputForm.value.trim().toUpperCase();
     if (initials) {
       localStorage.setItem(initials, scoreCount);
-      const highscores = getHighscores();
-      displayHighscores(highscores);
+      const scores = getScores();
+      displayScores(scores);
     }
   });
   quizContainer.appendChild(submitBtn);
 }
 
 function scoreKeeper(userAnswer) {
-  
   if (userAnswer === quiz[currentQuestion].correct) {
     scoreCount += 10;
     score.textContent = "Score: " + scoreCount;
@@ -259,18 +308,25 @@ function scoreKeeper(userAnswer) {
 }
 
 function displayQuestions() {
-
- 
   //Clear previous question and answer options
   displayQuestion.textContent = "";
-  while (quizContainer.lastChild) {
-    quizContainer.removeChild(quizContainer.lastChild);
+  // Get all children of quizContainer
+  const quizContainerChildren = quizContainer.children;
+
+  // Loop through each child and remove it
+  for (let i = quizContainerChildren.length - 1; i >= 0; i--) {
+    const child = quizContainerChildren[i];
+    if (child.classList.contains("options")) {
+      quizContainer.removeChild(child);
+    }
   }
 
   // Add question and answer options to quiz container
-  startTimer();
+
   score.textContent = "Score: " + scoreCount;
-  displayQuestion.textContent = `${currentQuestion + 1}/${quiz.length} ${quiz[currentQuestion].question}`;
+  displayQuestion.textContent = `${currentQuestion + 1}/${quiz.length} ${
+    quiz[currentQuestion].question
+  }`;
   displayQuestion.setAttribute("class", "question");
   quizContainer.appendChild(displayQuestion);
   for (let i = 0; i < quiz[currentQuestion].answers.length; i++) {
@@ -279,28 +335,30 @@ function displayQuestions() {
     option.textContent = quiz[currentQuestion].answers[i];
     quizContainer.appendChild(option);
 
-    option.addEventListener("click", function() {
+    option.addEventListener("click", function () {
       scoreKeeper(option.textContent);
     });
   }
 }
 
-
 startQuizBtn.addEventListener("click", function () {
-    quizContainer.appendChild(score);
-    score.textContent = "Score: " + scoreCount;
-    let userName = inputForm.value;
-    console.log(userName);
-    const rules = document.getElementById("rules");
-    rules.setAttribute('style', "display: none");
-    startQuizBtn.setAttribute("style", "display: none");
-    inputForm.disabled = true;
-    let width = userName.length + 100;
-    inputForm.setAttribute(
-      "style",
-      "width:" + width + "px; position: absolute;left: 50px;top: 10px;"
-    );
-    
-    displayQuestions();
-   
+  quizContainer.appendChild(score);
+  score.textContent = "Score: " + scoreCount;
+  let userName = inputForm.value;
+  console.log(userName);
+  if (userName == "") {
+    alert("Please enter the username");
+    location.reload();
+  }
+  const rules = document.getElementById("rules");
+  rules.setAttribute("style", "display: none");
+  startQuizBtn.setAttribute("style", "display: none");
+  inputForm.disabled = true;
+  let width = userName.length + 100;
+  inputForm.setAttribute(
+    "style",
+    "width:" + width + "px; position: absolute;left: 50px;top: 10px;"
+  );
+  startTimer();
+  displayQuestions();
 });

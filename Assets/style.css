@@ -11,12 +11,22 @@ body {
   font-size: 24px;
 }
 
+header {
+  margin: 10px;
+  text-align: center;
+  border-bottom: solid 5px #2e5e4e;
+}
+
+h1 {
+  margin: 2%;
+  text-align: center;
+}
+
 /* Container for the quiz */
 #quiz-container {
   text-align: center;
   width: 80%;
   margin: 0 auto;
-  text-align: center;
   font-family: Arial, sans-serif;
 }
 
@@ -31,21 +41,10 @@ body {
 }
 
 .input-form {
-  margin-top: 15%;
+  margin-top: 5%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  text-align: center;
-}
-
-#initials {
-  width: 250px;
-  height: 25px;
-  padding: 15px 10px;
-  color: #2e5e4e;
-  border: solid 5px #2e5e4e;
-  transition: border-width 0.6s linear;
-  font-size: 24px;
   text-align: center;
 }
 
@@ -53,7 +52,6 @@ body {
   margin-top: 50px;
   margin-left: 100px;
   width: 75%;
-
 }
 
 /* Style for the questions */
@@ -79,15 +77,36 @@ button:hover {
   color: white;
 }
 
-#scoreBox {
-  display: none;
-  border: dashed 5px #2e5e4e;
-
+.scoreBox {
+  display: flex;
+  justify-content: center;
 }
 
-#timer {
-  height: 50px;
-  width: 170px;
-  border: dashed 5px #2e5e4e;
+#initials {
+  margin: 10px;
+  width: 250px;
+  height: 25px;
+  padding: 15px 10px;
+  color: #2e5e4e;
+  border: solid 5px #2e5e4e;
+  transition: border-width 0.6s linear;
+  font-size: 24px;
   text-align: center;
+}
+
+#timer,
+#score {
+  text-align: center;
+}
+
+#submitBtn {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding: 10px;
+  color: #2e5e4e;
+  border: solid 5px #2e5e4e;
+  transition: border-width 0.6s linear;
+  font-size: 24px;
 }
