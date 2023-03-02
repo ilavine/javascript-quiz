@@ -99,8 +99,9 @@ button:hover {
   text-align: center;
 }
 
-#submitBtn {
-  display: block;
+#submitBtn, #goBackBtn, #clearBtn {
+  display: flex;
+  margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -109,4 +110,20 @@ button:hover {
   border: solid 5px #2e5e4e;
   transition: border-width 0.6s linear;
   font-size: 24px;
+}
+
+ol {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  text-align: center;
+  border: dashed 5px #2e5e4e;
+  transition: border-width 0.6s linear;
+  height: fit-content;
+  width: fit-content;
+}
+
+li {
+   padding-left: 0px;
+  margin-left: 20px;
 }
