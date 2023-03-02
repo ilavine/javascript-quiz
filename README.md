@@ -10,9 +10,8 @@ A simple quiz application built with JavaScript.
 * Timer countdown for each question
 * Score tracking and display at the end of the quiz
 * User can enter their name to start the quiz
-* User can see their progress through the quiz
 * User can see the correct answer after each question
-* User can see their score and time left after completing the quiz
+* User can see their score after completing the quiz
 
 ## Technologies Used
 * HTML
